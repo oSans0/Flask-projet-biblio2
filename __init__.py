@@ -7,7 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template('hello.html')  # Crée une page d'accueil
 
-@app.route('/livres')
+@app.route('/livres') 
 def liste_livres():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
