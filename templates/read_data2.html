@@ -2,17 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Utilisateurs</title>
+    <title>Liste des Utilisateurs</title>
 </head>
 <body>
     <h1>Liste des Utilisateurs</h1>
     <table>
         <tr>
-            <th>username</th>
+            <th>Nom d'utilisateur</th>
         </tr>
         {% for row in data %}
         <tr>
-            <td>{{ row[0] }}</td>
+            <td>{{ row[0] }}</td>  <!-- Nom d'utilisateur -->
         </tr>
         {% endfor %}
     </table>
