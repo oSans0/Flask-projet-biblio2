@@ -8,13 +8,11 @@
     <h1>Liste des Utilisateurs</h1>
     <table>
         <tr>
-            <th>ID</th>
             <th>username</th>
         </tr>
         {% for row in data %}
         <tr>
-            <td>{{ row[0] }}</td>  <!-- ID -->
-            <td>{{ row[1] }}</td>  <!-- Nom -->
+            <td>{{ row[0] }}</td>
         </tr>
         {% endfor %}
     </table>
