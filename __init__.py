@@ -142,5 +142,66 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('login'))
 
+@app.route('/emprunter_livre/<int:id_livre>', methods=['POST'])
+def emprunter_livre(id_livre):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Vérifier si le livre est disponible
+    cursor.execute('SELECT quantite FROM Bibliotheque WHERE ID_livre = ?', (id_livre,))
+    livre = cursor.fetchone()
+
+    if livre and livre['quantite'] > 0:
+        # Réduire la quantité et enregistrer l'emprunt
+        cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
+        cursor.execute('INSERT INTO Emprunts (user_id, livre_id) VALUES (?, ?)', (user_id, id_livre))
+        conn.commit()
+
+    conn.close()
+    return redirect('/livres')
+
+@app.route('/mes_emprunts')
+def mes_emprunts():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Récupérer les livres empruntés par l'utilisateur
+    cursor.execute('''
+        SELECT B.titre, E.date_emprunt
+        FROM Emprunts E
+        JOIN Bibliotheque B ON E.livre_id = B.ID_livre
+        WHERE E.user_id = ? AND E.date_retour IS NULL
+    ''', (user_id,))
+    emprunts = cursor.fetchall()
+    conn.close()
+
+    return render_template('mes_emprunts.html', emprunts=emprunts)
+@app.route('/rendre_livre/<int:id_livre>', methods=['POST'])
+def rendre_livre(id_livre):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    # Mettre à jour l'emprunt pour ajouter la date de retour
+    cursor.execute('UPDATE Emprunts SET date_retour = CURRENT_DATE WHERE livre_id = ? AND user_id = ? AND date_retour IS NULL', (id_livre, user_id))
+
+    # Réaugmenter la quantité du livre dans la bibliothèque
+    cursor.execute('UPDATE Bibliotheque SET quantite = quantite + 1 WHERE ID_livre = ?', (id_livre,))
+    conn.commit()
+    conn.close()
+
+    return redirect('/mes_emprunts')
+
 if __name__ == "__main__":
     app.run(debug=True)
