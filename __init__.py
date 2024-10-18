@@ -39,21 +39,17 @@ def enregistrer_livre():
 
     return render_template('formulaire_livre.html')  # Affiche le formulaire pour enregistrer un livre
 
-@app.route('/recherche_livre', methods=['GET', 'POST'])
-def recherche_livre():
-    if request.method == 'POST':
-        nom_livre = request.form['nom_livre']
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        # Recherche dans la base de données avec une requête SQL
-        cursor.execute('SELECT * FROM Bibliotheque WHERE titre LIKE ?', ('%' + nom_livre + '%',))
-        data = cursor.fetchall()
-        conn.close()
-
-        # Rendre le template avec les résultats de la recherche
-        return render_template('resultat_recherche.html', data=data, nom_recherche=nom_livre)
-
-    return render_template('formulaire_recherche.html')
+@app.route('/fiche_livre/<string:nom_livre>')
+def ReadLivre(nom_livre):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    # Recherche le livre par son nom dans la base de données
+    cursor.execute('SELECT * FROM Bibliotheque WHERE titre = ?', (nom_livre,))
+    data = cursor.fetchall()
+    conn.close()
+    
+    # Rendre le template HTML et transmettre les données
+    return render_template('read_data.html', data=data)
 
 @app.route('/emprunter_livre', methods=['GET', 'POST'])
 def emprunter_livre():
