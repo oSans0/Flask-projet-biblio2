@@ -118,7 +118,7 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('login'))
 
-@app.route('/emprunter_livre/<int:id_livre>', methods=['POST'])
+@app.route('/emprunter_livre/<int:id_livre>')
 def emprunter_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -161,7 +161,7 @@ def mes_emprunts():
 
     return render_template('mes_emprunts.html', emprunts=emprunts)
     
-@app.route('/rendre_livre/<int:id_livre>', methods=['POST'])
+@app.route('/rendre_livre/<int:id_livre>')
 def rendre_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
