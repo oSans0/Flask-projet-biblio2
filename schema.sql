@@ -6,5 +6,5 @@ CREATE TABLE Bibliotheque (
     auteur TEXT NOT NULL,
     genre TEXT,
     date_publication DATE,
-    quantite INTEGER NOT NULL, 
+    quantite INTEGER NOT NULL
 );
