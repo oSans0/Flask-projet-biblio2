@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Emprunter un Livre</title>
+</head>
+<body>
+    <h1>Emprunter un Livre</h1>
+    <form method="POST" action="/emprunter_livre">
+        <label for="id_livre">Choisir un livre à emprunter :</label>
+        <select name="id_livre" id="id_livre">
+            {% for livre in livres %}
+                <option value="{{ livre[0] }}">{{ livre[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Emprunter</button>
+    </form>
+</body>
+</html>
