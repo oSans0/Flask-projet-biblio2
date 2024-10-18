@@ -13,16 +13,14 @@
       google.charts.setOnLoadCallback(drawBackgroundColor);
       function drawBackgroundColor() {
         function drawChart(data) {
-          // Convertir les données récupérées en un tableau utilisable par Google Charts
           var dataTable = new google.visualization.DataTable();
           dataTable.addColumn('string', 'Date');
           dataTable.addColumn('number', 'Emprunts');
           data.results.forEach(entry => {
-            var date = new Date(entry.date); // Ajuste selon la structure de tes données
-            dataTable.addRow([date.toLocaleDateString(), entry.emprunts]); // Change entry.temp
+            var date = new Date(entry.date); 
+            dataTable.addRow([date.toLocaleDateString(), entry.emprunts]); 
           });
 
-          // Configurer les options du graphique en ligne
           var options = {
             title: 'Évolution des Emprunts de Livres',
             curveType: 'function',
@@ -31,7 +29,6 @@
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(dataTable, options);
         }
-        // Récupération de données depuis notre API /emprunts/
         fetch('/emprunts/')
           .then(response => response.json())
           .then(data => {
