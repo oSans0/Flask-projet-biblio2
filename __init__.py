@@ -118,7 +118,7 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('login'))
 
-@app.route('/emprunter_livre/<int:id_livre>', methods=['POST'])
+@app.route('/emprunter_livre/<int:id_livre>')
 def emprunter_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
