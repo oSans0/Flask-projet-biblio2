@@ -1,7 +1,7 @@
 import sqlite3
  
 # Connexion à la base de données SQLite
-connection = sqlite3.connect('') 
+connection = sqlite3.connect('database.db') 
 
 # Exécution du script SQL pour créer la table Bibliotheque
 with open('schema.sql') as f:
