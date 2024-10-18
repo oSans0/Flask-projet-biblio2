@@ -17,6 +17,15 @@ def liste_livres():
     conn.close()
     return render_template('read_data.html', data=data)  # Affiche la liste des livres
 
+@app.route('/Users') 
+def Users():
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Utilisateur;')
+    data = cursor.fetchall()
+    conn.close()
+    return render_template('read_data2.html', data=data)  # Affiche la liste des livres
+
 @app.route('/enregistrer_livre', methods=['GET', 'POST'])
 def enregistrer_livre():
     if request.method == 'POST':
