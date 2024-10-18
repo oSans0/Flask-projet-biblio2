@@ -3,14 +3,11 @@
     <tr>
         <th>Titre</th>
         <th>Date d'emprunt</th>
-        <th>Action</th>
     </tr>
     {% for emprunt in emprunts %}
     <tr>
         <td>{{ emprunt[0] }}</td>  <!-- Titre du livre -->
         <td>{{ emprunt[1] }}</td>  <!-- Date d'emprunt -->
-        <td><form method="POST" action="/rendre_livre/{{ emprunt[2] }}">
-            <button type="submit">Rendre</button>
         </form></td>
     </tr>
     {% endfor %}
