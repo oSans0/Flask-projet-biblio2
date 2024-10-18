@@ -39,7 +39,7 @@ def enregistrer_livre():
 
     return render_template('formulaire_livre.html')  # Affiche le formulaire pour enregistrer un livre
 
-@app.route('/emprunter_livre/<int:id_livre>', methods=['POST'])
+@app.route('/emprunter_livre/<int:id_livre>')
 def emprunter_livre(id_livre):
     # Ici, tu devras gérer l'emprunt d'un livre
     # Exemple simple : tu peux réduire la quantité du livre emprunté
