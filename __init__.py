@@ -111,7 +111,7 @@ def register():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute('INSERT INTO Users (username, password) VALUES (?, ?)',(username, password))
+        cursor.execute('INSERT INTO Utilisateur (username, password) VALUES (?, ?)',(username, password))
         conn.commit()
         conn.close()
         return redirect(url_for('login'))
@@ -125,7 +125,7 @@ def login():
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Users WHERE username = ? AND password = ?', (username, password))
+        cursor.execute('SELECT * FROM Utilisateur WHERE username = ? AND password = ?', (username, password))
         user = cursor.fetchone()
 
         if user:
