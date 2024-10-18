@@ -8,3 +8,4 @@ CREATE TABLE Bibliotheque (
     date_publication DATE,
     quantite INTEGER NOT NULL, 
 );
+ 
