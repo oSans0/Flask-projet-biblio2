@@ -1,0 +1,25 @@
+<!DOCTYPE>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisateurs</title>
+</head>
+<body>
+    <h1>Liste des Utilisateurs</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>username</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>  <!-- ID -->
+            <td>{{ row[1] }}</td>  <!-- Nom -->
+            <td>{{ row[2] }}</td>  <!-- Prénom -->
+            <td>{{ row[3] }}</td>  <!-- Adresse -->
+            <td>{{ row[4] }}</td>  <!-- Date d'Inscription -->
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
