@@ -12,7 +12,7 @@ def home():
 def liste_livres():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM Bibliotheque;')
+    cursor.execute('SELECT * FROM clients;')
     data = cursor.fetchall()
     conn.close()
     return render_template('read_data.html', data=data)  # Affiche la liste des livres
