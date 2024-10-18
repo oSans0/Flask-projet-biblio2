@@ -1,13 +1,10 @@
 import sqlite3
- 
-# Connexion à la base de données SQLite
-connection = sqlite3.connect('database.db') 
 
-# Exécution du script SQL pour créer la table Bibliotheque
+connection = sqlite3.connect('database.db')
+
 with open('schema.sql') as f:
     connection.executescript(f.read())
 
-# Création d'un curseur pour effectuer des opérations sur la base de données
 cur = connection.cursor()
 
 # Insertion de livres dans la table Bibliotheque
