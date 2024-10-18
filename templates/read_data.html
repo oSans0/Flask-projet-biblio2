@@ -14,6 +14,7 @@
             <th>Genre</th>
             <th>Date de Publication</th>
             <th>Quantité</th>
+            <th>Action</th> <!-- Colonne pour le bouton de suppression -->
         </tr>
         {% for row in data %}
         <tr>
@@ -23,6 +24,11 @@
             <td>{{ row[3] }}</td>  <!-- Genre -->
             <td>{{ row[4] }}</td>  <!-- Date de Publication -->
             <td>{{ row[5] }}</td>  <!-- Quantité -->
+            <td>
+                <form action="/supprimer_livre/{{ row[0] }}" method="POST">
+                    <button type="submit">Supprimer</button>
+                </form>
+            </td> <!-- Bouton de suppression -->
         </tr>
         {% endfor %}
     </table>
