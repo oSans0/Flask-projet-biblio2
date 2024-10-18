@@ -63,5 +63,20 @@ def emprunter_livre():
 
     return render_template('emprunter_livre.html', livres=livres)
 
+@app.route('/supprimer_livre/<int:id_livre>', methods=['POST'])
+def supprimer_livre(id_livre):
+    # Connexion à la base de données
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+
+    # Exécuter la requête pour supprimer un livre
+    cursor.execute('DELETE FROM Bibliotheque WHERE ID_livre = ?', (id_livre,))
+    conn.commit()
+    conn.close()
+
+    # Rediriger vers la liste des livres après la suppression
+    return redirect('/livres')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
