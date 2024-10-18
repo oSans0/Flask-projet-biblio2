@@ -59,30 +59,6 @@ def ReadLivre(nom_livre):
     # Rendre le template HTML et transmettre les données
     return render_template('read_data.html', data=data)
 
-@app.route('/emprunter_livre', methods=['GET', 'POST'])
-def emprunter_livre():
-    if request.method == 'POST':
-        # Récupérer l'ID du livre sélectionné dans le formulaire
-        id_livre = request.form['id_livre']
-        
-        # Connexion à la base de données et mise à jour
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
-        conn.commit()
-        conn.close()
-
-        return redirect('/livres')  # Redirige vers la liste des livres après l'emprunt
-
-    # Si c'est une requête GET, on affiche la liste des livres pour l'emprunt
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT ID_livre, titre FROM Bibliotheque WHERE quantite > 0')
-    livres = cursor.fetchall()  # Récupérer les livres disponibles pour l'emprunt
-    conn.close()
-
-    return render_template('emprunter_livre.html', livres=livres)
-
 @app.route('/supprimer_livre/<int:id_livre>', methods=['POST'])
 def supprimer_livre(id_livre):
     # Connexion à la base de données
@@ -184,6 +160,7 @@ def mes_emprunts():
     conn.close()
 
     return render_template('mes_emprunts.html', emprunts=emprunts)
+    
 @app.route('/rendre_livre/<int:id_livre>', methods=['POST'])
 def rendre_livre(id_livre):
     if 'user_id' not in session:
