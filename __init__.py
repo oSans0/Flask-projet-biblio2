@@ -39,16 +39,29 @@ def enregistrer_livre():
 
     return render_template('formulaire_livre.html')  # Affiche le formulaire pour enregistrer un livre
 
-@app.route('/emprunter_livre/<int:id_livre>')
-def emprunter_livre(id_livre):
-    # Ici, tu devras gérer l'emprunt d'un livre
-    # Exemple simple : tu peux réduire la quantité du livre emprunté
+@app.route('/emprunter_livre', methods=['GET', 'POST'])
+def emprunter_livre():
+    if request.method == 'POST':
+        # Récupérer l'ID du livre sélectionné dans le formulaire
+        id_livre = request.form['id_livre']
+        
+        # Connexion à la base de données et mise à jour
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
+        conn.commit()
+        conn.close()
+
+        return redirect('/livres')  # Redirige vers la liste des livres après l'emprunt
+
+    # Si c'est une requête GET, on affiche la liste des livres pour l'emprunt
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
-    conn.commit()
+    cursor.execute('SELECT ID_livre, titre FROM Bibliotheque WHERE quantite > 0')
+    livres = cursor.fetchall()  # Récupérer les livres disponibles pour l'emprunt
     conn.close()
-    return redirect('/livres')  # Redirige vers la liste des livres
+
+    return render_template('emprunter_livre.html', livres=livres)
 
 if __name__ == "__main__":
     app.run(debug=True)
