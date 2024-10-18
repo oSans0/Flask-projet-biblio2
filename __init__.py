@@ -130,7 +130,7 @@ def login():
 
         if user:
             session['user_id'] = user['id']
-            return redirect(url_for('livres'))
+            return redirect(url_for('liste_livres'))
         else:
             return "Identifiants incorrects"
 
