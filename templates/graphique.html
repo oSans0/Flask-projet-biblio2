@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Metrique</title>
+    <title>Statistiques des Livres</title>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>  
 
@@ -11,33 +11,33 @@
     <script>
       google.charts.load('current', { packages: ['corechart'] });
       google.charts.setOnLoadCallback(drawBackgroundColor);
-     function drawBackgroundColor() {
-    function drawChart(data) {
-    // Convertir les données récupérées en un tableau utilisable par Google Charts
-    var dataTable = new google.visualization.DataTable();
-    dataTable.addColumn('string', 'Date');
-    dataTable.addColumn('number', 'Valeur');
-    data.results.forEach(entry => {
-      var date = new Date(entry.Jour * 1000);
-      dataTable.addRow([date.toLocaleDateString(), entry.temp]);
-    });
+      function drawBackgroundColor() {
+        function drawChart(data) {
+          // Convertir les données récupérées en un tableau utilisable par Google Charts
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Date');
+          dataTable.addColumn('number', 'Emprunts');
+          data.results.forEach(entry => {
+            var date = new Date(entry.date); // Ajuste selon la structure de tes données
+            dataTable.addRow([date.toLocaleDateString(), entry.emprunts]); // Change entry.temp
+          });
 
-    // Configurer les options du graphique en ligne
-    var options = {
-      title: 'Évolution des températures de Paris pour les 16 prochains jours',
-      curveType: 'function',
-      legend: { position: 'bottom' }
-    };
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(dataTable, options);
-  }
-  // Récupération de données depuis notre API /paris/
-  fetch('/paris/')
-    .then(response => response.json())
-    .then(data => {
-      drawChart(data);
-    })
-}
+          // Configurer les options du graphique en ligne
+          var options = {
+            title: 'Évolution des Emprunts de Livres',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(dataTable, options);
+        }
+        // Récupération de données depuis notre API /emprunts/
+        fetch('/emprunts/')
+          .then(response => response.json())
+          .then(data => {
+            drawChart(data);
+          })
+      }
     </script>
   </body>
 </html>
