@@ -28,5 +28,6 @@ cur.execute("INSERT INTO Bibliotheque (titre, auteur, genre, date_publication, q
 cur.execute("INSERT INTO Bibliotheque (titre, auteur, genre, date_publication, quantite) VALUES (?, ?, ?, ?, ?)",
             ('Le Seigneur des Anneaux', 'J.R.R. Tolkien', 'Fantasy', '1954-07-29', 8))
 
+
 connection.commit()
 connection.close()
