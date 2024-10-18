@@ -7,14 +7,9 @@ with open('schema2.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('DUPONT', 'Emilie'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('LEROUX', 'Lucas'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('MARTIN', 'Amandine'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('TREMBLAY', 'Antoine'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('LAMBERT', 'Sarah'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('GAGNON', 'Nicolas'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('DUBOIS', 'Charlotte'))
-cur.execute("INSERT INTO Utilisateur (nom, prenom) VALUES (?, ?)",('LEFEVRE', 'Thomas'))
+cur.execute("INSERT INTO Utilisateur (username, password) VALUES (?, ?)",('YUI', '12345'))
+cur.execute("INSERT INTO Utilisateur (username, password) VALUES (?, ?)",('LEROUX', '12345'))
+cur.execute("INSERT INTO Utilisateur (username, password) VALUES (?, ?)",('MARTIN', '12345'))
 
 connection.commit()
 connection.close()
