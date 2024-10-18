@@ -14,7 +14,7 @@ def liste_livres():
     cursor.execute('SELECT * FROM Bibliotheque;')
     data = cursor.fetchall()
     conn.close()
-    return render_template('liste_livres.html', data=data)  # Affiche la liste des livres
+    return render_template('read_data.html', data=data)  # Affiche la liste des livres
 
 @app.route('/enregistrer_livre', methods=['GET', 'POST'])
 def enregistrer_livre():
