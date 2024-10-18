@@ -124,21 +124,29 @@ def emprunter_livre(id_livre):
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = sqlite3.connect('database.db')  # Assurez-vous que cette connexion est correcte
+    
+    # Connexion à la base de données avec timeout
+    conn = sqlite3.connect('database.db', timeout=5)  
     cursor = conn.cursor()
 
-    # Vérifier si le livre est disponible
-    cursor.execute('SELECT quantite FROM Bibliotheque WHERE ID_livre = ?', (id_livre,))
-    livre = cursor.fetchone()
+    try:
+        # Vérifier si le livre est disponible
+        cursor.execute('SELECT quantite FROM Bibliotheque WHERE ID_livre = ?', (id_livre,))
+        livre = cursor.fetchone()
 
-    # Assurez-vous que livre est non nul et accéder à la quantité avec indexation
-    if livre and livre[0] > 0:  # livre[0] pour accéder à la première colonne (quantité)
-        # Réduire la quantité et enregistrer l'emprunt
-        cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
-        cursor.execute('INSERT INTO Emprunts (user_id, livre_id) VALUES (?, ?)', (user_id, id_livre))
-        conn.commit()
+        if livre and livre[0] > 0:  # Vérifie la quantité du livre
+            # Réduire la quantité et enregistrer l'emprunt
+            cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
+            cursor.execute('INSERT INTO Emprunts (user_id, livre_id) VALUES (?, ?)', (user_id, id_livre))
+            conn.commit()
+        else:
+            # Gérer le cas où le livre n'est pas disponible (facultatif)
+            print("Le livre n'est pas disponible.")
+    except sqlite3.Error as e:
+        print(f"Erreur lors de l'emprunt du livre : {e}")
+    finally:
+        conn.close()  # S'assurer que la connexion est fermée
 
-    conn.close()
     return redirect('/livres')
 
 @app.route('/mes_emprunts')
