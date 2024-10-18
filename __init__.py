@@ -97,6 +97,11 @@ def supprimer_livre(id_livre):
     # Rediriger vers la liste des livres après la suppression
     return redirect('/livres')
 
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
