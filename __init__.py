@@ -118,20 +118,21 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('login'))
 
-@app.route('/emprunter_livre/<int:id_livre>')
+@app.route('/emprunter_livre/<int:id_livre>', methods=['POST'])
 def emprunter_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = get_db_connection()
+    conn = sqlite3.connect('database.db')  # Assurez-vous que cette connexion est correcte
     cursor = conn.cursor()
 
     # Vérifier si le livre est disponible
     cursor.execute('SELECT quantite FROM Bibliotheque WHERE ID_livre = ?', (id_livre,))
     livre = cursor.fetchone()
 
-    if livre and livre['quantite'] > 0:
+    # Assurez-vous que livre est non nul et accéder à la quantité avec indexation
+    if livre and livre[0] > 0:  # livre[0] pour accéder à la première colonne (quantité)
         # Réduire la quantité et enregistrer l'emprunt
         cursor.execute('UPDATE Bibliotheque SET quantite = quantite - 1 WHERE ID_livre = ?', (id_livre,))
         cursor.execute('INSERT INTO Emprunts (user_id, livre_id) VALUES (?, ?)', (user_id, id_livre))
@@ -161,24 +162,28 @@ def mes_emprunts():
 
     return render_template('mes_emprunts.html', emprunts=emprunts)
     
-@app.route('/rendre_livre/<int:id_livre>')
+@app.route('/rendre_livre/<int:id_livre>', methods=['POST'])  # Utilise POST pour éviter de rendre un livre via un lien
 def rendre_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    conn = get_db_connection()
+    conn = sqlite3.connect('database.db')  # Assurez-vous que cette connexion est correcte
     cursor = conn.cursor()
 
     # Mettre à jour l'emprunt pour ajouter la date de retour
     cursor.execute('UPDATE Emprunts SET date_retour = CURRENT_DATE WHERE livre_id = ? AND user_id = ? AND date_retour IS NULL', (id_livre, user_id))
 
-    # Réaugmenter la quantité du livre dans la bibliothèque
-    cursor.execute('UPDATE Bibliotheque SET quantite = quantite + 1 WHERE ID_livre = ?', (id_livre,))
+    # Vérifie si la mise à jour a réussi (c'est-à-dire qu'il y avait un emprunt actif)
+    if cursor.rowcount > 0:
+        # Réaugmenter la quantité du livre dans la bibliothèque
+        cursor.execute('UPDATE Bibliotheque SET quantite = quantite + 1 WHERE ID_livre = ?', (id_livre,))
+    
     conn.commit()
     conn.close()
 
-    return redirect('/mes_emprunts')
+    return redirect('/mes_emprunts')  # Redirige vers la page des emprunts de l'utilisateur
+
 
 if __name__ == "__main__":
     app.run(debug=True)
