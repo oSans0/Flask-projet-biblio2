@@ -88,6 +88,45 @@ def supprimer_livre(id_livre):
     # Rediriger vers la liste des livres après la suppression
     return redirect('/livres')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('INSERT INTO Users (username, password) VALUES (?, ?)',(username, password))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Users WHERE username = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            session['user_id'] = user['id']
+            return redirect(url_for('livres'))
+        else:
+            return "Identifiants incorrects"
+
+    return render_template('login.html')
+
+# Route pour la déconnexion
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
