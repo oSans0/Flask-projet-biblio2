@@ -170,7 +170,7 @@ def mes_emprunts():
 
     return render_template('mes_emprunts.html', emprunts=emprunts)
     
-@app.route('/rendre_livre/<int:id_livre>', methods=['POST'])  # Utilise POST pour éviter de rendre un livre via un lien
+@app.route('/rendre_livre/<int:id_livre>')  # Utilise POST pour éviter de rendre un livre via un lien
 def rendre_livre(id_livre):
     if 'user_id' not in session:
         return redirect(url_for('login'))
