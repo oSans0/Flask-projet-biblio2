@@ -43,7 +43,6 @@ def enregistrer_livre():
 def ReadLivre(nom_livre):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    # Recherche le livre par son nom dans la base de données
     cursor.execute('SELECT * FROM Bibliotheque WHERE titre = ?', (nom_livre,))
     data = cursor.fetchall()
     conn.close()
