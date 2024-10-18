@@ -1,8 +1,10 @@
-DROP TABLE IF EXISTS clients;
-CREATE TABLE clients (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    nom TEXT NOT NULL,
-    prenom TEXT NOT NULL,
-    adresse TEXT NOT NULL
+DROP TABLE IF EXISTS Bibliotheque;
+
+CREATE TABLE Bibliotheque (
+    ID_livre INTEGER PRIMARY KEY AUTOINCREMENT,
+    titre TEXT NOT NULL,
+    auteur TEXT NOT NULL,
+    genre TEXT,
+    date_publication DATE,
+    quantite INTEGER NOT NULL, 
 );
