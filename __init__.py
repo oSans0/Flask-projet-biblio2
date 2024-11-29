@@ -8,7 +8,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def home():
     return render_template('login.html')  
   
-@app.route('/livres') 
+@app.route('/livres')  
 def liste_livres():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
