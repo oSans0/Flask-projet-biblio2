@@ -6,7 +6,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/')
 def home():
-    return render_template('read_data.html')  
+    return render_template('login.html')  
   
 @app.route('/livres')
 def liste_livres():
