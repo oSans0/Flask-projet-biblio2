@@ -143,7 +143,7 @@ def deleteAccount():
             conn.close()
             return "Identifiants incorrects ou utilisateur introuvable"
 
-    return render_template('deleteAccount.html.html')
+    return render_template('deleteAccount.html')
 
 @app.route('/logout')
 def logout():
