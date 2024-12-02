@@ -118,6 +118,33 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/deleteAccount', methods=['GET', 'POST'])
+def deleteAccount():
+    if request.method == 'POST':
+        if request.is_json:
+            data = request.get_json()
+            username = data.get('username')
+            password = data.get('password')
+        else:
+            username = request.form['username']
+            password = request.form['password']
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Utilisateur WHERE username = ? AND password = ?', (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            cursor.execute('DELETE FROM Utilisateur WHERE username = ? AND password = ?', (username, password))
+            conn.commit()
+            conn.close()
+            return "Compte supprimé avec succès"
+        else:
+            conn.close()
+            return "Identifiants incorrects ou utilisateur introuvable"
+
+    return render_template('login.html')
+
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
